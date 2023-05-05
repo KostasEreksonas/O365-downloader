@@ -27,6 +27,9 @@ def get_data(url):
 
     return data
 
+def get_files(url):
+    pass
+
 def main():
     url = f'https://{config.domain}.sharepoint.com/sites/{config.site}'
     title = get_data(url)['d']['Title']
