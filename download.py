@@ -24,10 +24,11 @@ def get_data(url):
     request = RequestOptions(f"{url}/_api/web/")
     response = get_context(url).pending_request().execute_request_direct(request)
     data = json.loads(response.content)
+
     return data
 
 def main():
-    url = 'https://codeacademylt.sharepoint.com/sites/PHPmokymaiPHPU1'
+    url = f'https://{config.domain}.sharepoint.com/sites/{config.site}'
     title = get_data(url)['d']['Title']
     print(f"Title: {title}")
 
