@@ -8,7 +8,9 @@ Table of Contents
 
 # Installation
 
-Use `setup.py` to create a `config.py` file and populate it with the following information:
+First install required packages with `pip install -r requirements.txt`
+
+Then use `setup.py` to create a `config.py` file and populate it with the following information:
 ```
 1. Username - username for your Microsoft 365 account
 2. Password - password for your Microsoft 365 account
