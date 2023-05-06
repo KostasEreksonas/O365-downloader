@@ -46,6 +46,15 @@ def list_files(url):
             files.append(item.file.serverRelativeUrl)
     return folders,files
 
+def get_folders(url):
+    folders = list_files(url)[0]
+    for folder in folders:
+        foldername = re.split("/", folder)[-1]
+        files = get_context(url).web.get_folder_by_server_relative_url(folder).files
+        get_context(url).load(files).execute_query()
+        for file in files:
+            print(f"{file.name}")
+
 def get_files(url):
     """Download files from a sharepoint site"""
     files = list_files(url)[1]
