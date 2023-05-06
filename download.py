@@ -46,15 +46,6 @@ def list_files(url):
             files.append(item.file.serverRelativeUrl)
     return folders,files
 
-def get_folders(url):
-    """Get a list of folders"""
-    folders = list_files(url)[0]
-    foldernames = []
-    for folder in folders:
-        foldername = re.split("/", folder)[-1]
-        foldernames.append(foldername)
-    return folders,foldernames
-
 def get_files(url):
     """Download files from a sharepoint site"""
     files = list_files(url)[1]
@@ -71,7 +62,6 @@ def examples(url):
     #print(f"RequestOptions query (title): {get_data(url)['d']['Title']}")
     #print(f"Query properties: {get_query(url).properties}")
     #print(f"Folders: {list_files(url)[0]}, Files: {list_files(url)[1]}")
-    #print(f"Folders: {get_folders(url)[0]}, foldernames: {get_folders(url)[1]}")
 
 def main():
     """Main program"""
