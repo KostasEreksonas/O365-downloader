@@ -53,13 +53,15 @@ def get_files(url):
             response = File.open_binary(get_context(url), file)
             output.write(response.content)
 
+def examples(url):
+    print(f"ClientContext query (title): {get_query(url).properties['Title']}")
+    print(f"RequestOptions query (title): {get_data(url)['d']['Title']}")
+    print(f"{get_query(url).properties}")
+    print(f"Folders: {list_files(url)[0]}, Files: {list_files(url)[1]}")
+
 def main():
     url = f'https://{config.domain}.sharepoint.com/sites/{config.site}'
-    #print(f"ClientContext query (title): {get_query(url).properties['Title']}")
-    #print(f"RequestOptions query (title): {get_data(url)['d']['Title']}")
-    #print(f"{get_query(url).properties}")
-    #print(get_files(url).name)
-    #print(f"Folders: {list_files(url)[0]}, Files: {list_files(url)[1]}")
+    #examples(url)
     get_files(url)
 
 if __name__ == "__main__":
