@@ -33,7 +33,10 @@ def get_files(url):
 def main():
     url = f'https://{config.domain}.sharepoint.com/sites/{config.site}'
     title = get_data(url)['d']['Title']
-    print(f"Title: {title}")
+    description = get_data(url)['d']['Description']
+    url = get_data(url)['d']['Url']
+    relative_url = get_data(url)['d']['ServerRelativeUrl']
+    print(f"Title: {title}, description: {description}, url: {url} relative url: {relative_url}")
 
 if __name__ == "__main__":
     main()
