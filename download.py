@@ -38,7 +38,7 @@ def list_files(url):
             folders.append(item.folder.serverRelativeUrl)
         else:
             files.append(item.file.serverRelativeUrl)
-    return f"Folders: {folders}, files: {files}"
+    return folders,files
 
 def get_files(url):
     conn = get_context(url)
@@ -53,7 +53,7 @@ def main():
     #print(f"RequestOptions query (title): {get_data(url)['d']['Title']}")
     #print(f"{get_query(url).properties}")
     #print(get_files(url).name)
-    print(list_files(url))
+    print(f"Folders: {list_files(url)[0]}, Files: {list_files(url)[1]}")
 
 if __name__ == "__main__":
     main()
