@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
+import os
 import json
 import config
+import tempfile
 from office365.runtime.auth.user_credential import UserCredential
 from office365.runtime.http.request_options import RequestOptions
 from office365.sharepoint.client_context import ClientContext
@@ -41,11 +43,12 @@ def list_files(url):
     return folders,files
 
 def get_files(url):
-    conn = get_context(url)
-    relative_url = f"{get_query(url).properties['ServerRelativeUrl']}/Shared Documents/General/admin.jpg"
-    print(f"{relative_url}")
-    file = conn.web.get_file_by_server_relative_url(relative_url).execute_query()
-    return file
+    files = list_files(url)[1]
+    for filename in files:
+        download_path = os.path.join(tempfile.mkdtemp(), os.path.basename(filename))
+        with open(download_path, 'wb') as local_file:
+            file = get_context(url).web.get_file_by_server_relative_url(filename).execute_query()
+    print(f"{filename} file has been downloaded into: {download_path}")
 
 def main():
     url = f'https://{config.domain}.sharepoint.com/sites/{config.site}'
@@ -53,7 +56,8 @@ def main():
     #print(f"RequestOptions query (title): {get_data(url)['d']['Title']}")
     #print(f"{get_query(url).properties}")
     #print(get_files(url).name)
-    print(f"Folders: {list_files(url)[0]}, Files: {list_files(url)[1]}")
+    #print(f"Folders: {list_files(url)[0]}, Files: {list_files(url)[1]}")
+    get_files(url)
 
 if __name__ == "__main__":
     main()
