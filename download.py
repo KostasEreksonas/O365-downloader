@@ -62,8 +62,8 @@ def get_files(url):
         filename = re.split("/", file)[-1]
         print(f"Downloading {filename}")
         with open(filename, 'wb') as output:
-            response = File.open_binary(get_context(url), file)
-            output.write(response.content)
+            contents = File.open_binary(get_context(url), file)
+            output.write(contents.content)
 
 def examples(url):
     """Some usage examples"""
