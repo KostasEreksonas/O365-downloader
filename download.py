@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 
 import os
+import re
 import json
 import config
 import tempfile
 from office365.runtime.auth.user_credential import UserCredential
 from office365.runtime.http.request_options import RequestOptions
 from office365.sharepoint.client_context import ClientContext
+from office365.sharepoint.files.file import File
 
 def get_context(url):
     # Initialize the client credentials
@@ -44,11 +46,12 @@ def list_files(url):
 
 def get_files(url):
     files = list_files(url)[1]
-    for filename in files:
-        download_path = os.path.join(tempfile.mkdtemp(), os.path.basename(filename))
-        with open(download_path, 'wb') as local_file:
-            file = get_context(url).web.get_file_by_server_relative_url(filename).execute_query()
-    print(f"{filename} file has been downloaded into: {download_path}")
+    for file in files:
+        filename = re.split("/", file)[-1]
+        print(f"Downloading {filename}")
+        with open(filename, 'wb') as output:
+            response = File.open_binary(get_context(url), file)
+            output.write(response.content)
 
 def main():
     url = f'https://{config.domain}.sharepoint.com/sites/{config.site}'
