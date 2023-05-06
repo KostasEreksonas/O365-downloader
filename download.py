@@ -16,11 +16,13 @@ def get_context(url):
     return ctx
 
 def get_query(url):
+    """Query API using ClientContext class (recommended)"""
     web = get_context(url).web.get().execute_query()
 
     return web
 
 def get_data(url):
+    """Query API using RequestOptions class"""
     request = RequestOptions(f"{url}/_api/web/")
     response = get_context(url).pending_request().execute_request_direct(request)
     data = json.loads(response.content)
@@ -32,11 +34,8 @@ def get_files(url):
 
 def main():
     url = f'https://{config.domain}.sharepoint.com/sites/{config.site}'
-    title = get_data(url)['d']['Title']
-    description = get_data(url)['d']['Description']
-    url = get_data(url)['d']['Url']
-    relative_url = get_data(url)['d']['ServerRelativeUrl']
-    print(f"Title: {title}, description: {description}, url: {url} relative url: {relative_url}")
+    print(f"ClientContext query (title): {get_query(url).properties['Title']}")
+    print(f"RequestOptions query (title): {get_data(url)['d']['Title']}")
 
 if __name__ == "__main__":
     main()
