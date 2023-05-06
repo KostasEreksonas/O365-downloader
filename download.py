@@ -11,6 +11,7 @@ from office365.sharepoint.client_context import ClientContext
 from office365.sharepoint.files.file import File
 
 def get_context(url):
+    """Login to sharepoint site using configured credentials"""
     # Initialize the client credentials
     user_credentials = UserCredential(config.username, config.password)
 
@@ -34,6 +35,7 @@ def get_data(url):
     return data
 
 def list_files(url):
+    """Get a list of folders and files in a sharepoint site"""
     folders, files = ([] for i in range(2))
     doc_lib = get_context(url).web.lists.get_by_title("Documents")
     items = doc_lib.items.select(["FileSystemObjectType"]).expand(["File", "Folder"]).get().execute_query()
@@ -45,6 +47,7 @@ def list_files(url):
     return folders,files
 
 def get_files(url):
+    """Download files from a sharepoint site"""
     files = list_files(url)[1]
     for file in files:
         filename = re.split("/", file)[-1]
@@ -54,12 +57,14 @@ def get_files(url):
             output.write(response.content)
 
 def examples(url):
+    """Some usage examples"""
     print(f"ClientContext query (title): {get_query(url).properties['Title']}")
     print(f"RequestOptions query (title): {get_data(url)['d']['Title']}")
-    print(f"{get_query(url).properties}")
+    print(f"Query properties: {get_query(url).properties}")
     print(f"Folders: {list_files(url)[0]}, Files: {list_files(url)[1]}")
 
 def main():
+    """Main program"""
     url = f'https://{config.domain}.sharepoint.com/sites/{config.site}'
     #examples(url)
     get_files(url)
