@@ -4,7 +4,7 @@ import os
 import re
 import json
 import config
-import tempfile
+
 from office365.runtime.auth.user_credential import UserCredential
 from office365.runtime.http.request_options import RequestOptions
 from office365.sharepoint.client_context import ClientContext
