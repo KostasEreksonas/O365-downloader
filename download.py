@@ -29,13 +29,31 @@ def get_data(url):
 
     return data
 
+def list_files(url):
+    folders, files = ([] for i in range(2))
+    doc_lib = get_context(url).web.lists.get_by_title("Documents")
+    items = doc_lib.items.select(["FileSystemObjectType"]).expand(["File", "Folder"]).get().execute_query()
+    for item in items:
+        if item.file_system_object_type == 1:
+            folders.append(item.folder.serverRelativeUrl)
+        else:
+            files.append(item.file.serverRelativeUrl)
+    return f"Folders: {folders}, files: {files}"
+
 def get_files(url):
-    pass
+    conn = get_context(url)
+    relative_url = f"{get_query(url).properties['ServerRelativeUrl']}/Shared Documents/General/admin.jpg"
+    print(f"{relative_url}")
+    file = conn.web.get_file_by_server_relative_url(relative_url).execute_query()
+    return file
 
 def main():
     url = f'https://{config.domain}.sharepoint.com/sites/{config.site}'
-    print(f"ClientContext query (title): {get_query(url).properties['Title']}")
-    print(f"RequestOptions query (title): {get_data(url)['d']['Title']}")
+    #print(f"ClientContext query (title): {get_query(url).properties['Title']}")
+    #print(f"RequestOptions query (title): {get_data(url)['d']['Title']}")
+    #print(f"{get_query(url).properties}")
+    #print(get_files(url).name)
+    print(list_files(url))
 
 if __name__ == "__main__":
     main()
