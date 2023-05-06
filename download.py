@@ -49,7 +49,7 @@ def list_files(url):
 def get_folders(url):
     folders = list_files(url)[0]
     for folder in folders:
-        foldername = re.split("/", folder)[-1]
+        folder_name = re.split("/", folder)[-1]
         files = get_context(url).web.get_folder_by_server_relative_url(folder).files
         get_context(url).load(files).execute_query()
         for file in files:
@@ -59,9 +59,9 @@ def get_files(url):
     """Download files from a sharepoint site"""
     files = list_files(url)[1]
     for file in files:
-        filename = re.split("/", file)[-1]
+        file_name = re.split("/", file)[-1]
         print(f"Downloading {filename}")
-        with open(filename, 'wb') as output:
+        with open(file_name, 'wb') as output:
             contents = File.open_binary(get_context(url), file)
             output.write(contents.content)
 
