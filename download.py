@@ -12,11 +12,8 @@ from office365.sharepoint.files.file import File
 
 def get_context(url):
     """Login to sharepoint site using configured credentials"""
-    # Initialize the client credentials
-    user_credentials = UserCredential(config.username, config.password)
-
-    # create client context object
-    ctx = ClientContext(url).with_credentials(user_credentials)
+    creds = UserCredential(config.username, config.password) # Initialize client credentials
+    ctx = ClientContext(url).with_credentials(creds) # create client context object
 
     return ctx
 
@@ -44,6 +41,7 @@ def list_files(url):
             folders.append(item.folder.serverRelativeUrl)
         else:
             files.append(item.file.serverRelativeUrl)
+
     return folders,files
 
 def get_folders(url):
@@ -75,7 +73,6 @@ def examples(url):
 def main():
     """Main program"""
     url = f'https://{config.domain}.sharepoint.com/sites/{config.site}'
-    #examples(url)
     get_files(url)
 
 if __name__ == "__main__":
