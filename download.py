@@ -73,6 +73,8 @@ def examples(url):
 def main():
     """Main program"""
     url = f'https://{config.domain}.sharepoint.com/sites/{config.site}'
+    #examples(url)
+    #list_files(url)
     get_files(url)
 
 if __name__ == "__main__":
